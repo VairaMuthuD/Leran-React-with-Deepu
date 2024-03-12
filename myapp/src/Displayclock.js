@@ -2,78 +2,71 @@ import React, { useEffect, useState } from 'react'
 
 const Displayclock = () => {
 
-    const[second, setSecond] = useState(0)
-    const[minute, setMinute] = useState(0)
-    const[hour, setHour] = useState(0)
+    const newTime = new Date();
 
-    // const newTime = new Date();
+    const [second, setSecond] = useState(newTime.getSeconds())
+    const [minute, setMinute] = useState(newTime.getMinutes())
+    const [hour, setHour] = useState(newTime.getHours())
 
-    // let getSecond = newTime.getSeconds();
-    // let getMinute = newTime.getMinutes();
-    // let getHour = newTime.getHours();
+    
 
-    let getSecond = 25;
-    let getMinute = 30;
-    let getHour = 12;
+    let newSecond = second;
+    let newMinute = minute;
+    let newHour = hour;
 
-    useEffect(()=>{
+    var timerFunction = 0;
 
-        setSecond(getSecond)
-        setMinute(getMinute)
-        setHour(getHour)
+    function handleChange() {
+        newSecond = second + 1
 
-        setInterval(()=>{
+        if (newSecond > 59) {
+            newSecond = 0;
+            newMinute = minute + 1;
+            setMinute(newMinute)
+        }
 
-            if(getSecond > 59){
-                getSecond = 0
+        if(newMinute > 59){
+            newMinute = 0
+            setMinute(newMinute)
+            newHour = hour + 1;
+            setHour(newHour)
+        }
 
-                // setSecond(getSecond)
+        if(newHour > 23){
+            newHour = 0
+            setHour(newHour)
+        }
 
-                getMinute = getMinute + 1
+        setSecond(newSecond)
+    }
 
-                // setMinute(getMinute)
+    function stopChange(){
+        clearTimeout(timerFunction)
+    }
 
-                if(getMinute > 59){
-                    getMinute = 0
 
-                    // setMinute(getMinute)
+    useEffect(() => {
 
-                    getHour = getHour + 1
+       setHour(newHour)
+       setMinute(newMinute)
+       setSecond(newSecond)
 
-                    // setHour(getHour)
-
-                    if(getHour > 23){
-                        getHour = 0
-
-                        // setHour(getHour)
-                    }
-                }
-
-                else{
-                    getMinute = getMinute + 1; 
-
-                    // setMinute(getMinute)
-                }
-            }
-
-            else{
-                getSecond = getSecond + 1
-
-                // setSecond(getSecond)
-            }
-
-            
-
-        },1000)
+       timerFunction = setTimeout(() => handleChange(), 10)
 
     })
 
-  return (
-    <div>
+    return (
+        <div>
 
-        {hour} : {minute} : {second}
-    </div>
-  )
+            <div>
+                <button onClick={handleChange}>Start</button>
+
+                <button onClick={stopChange}>Stop</button>
+            </div>
+
+            {hour} : {minute} : {second}
+        </div>
+    )
 }
 
 export default Displayclock
