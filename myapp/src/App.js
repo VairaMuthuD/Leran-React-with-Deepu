@@ -17,11 +17,11 @@ function App() {
     <div className="App">
       <div>
       <button onClick={handleChange}>
-          Plus +
+          Plus
        </button>
 
        <button onClick={handleChange1}>
-          Minus -
+          Minus
        </button>
       </div>
       
